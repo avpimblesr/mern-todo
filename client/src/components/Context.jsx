@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
-
 const Context = React.createContext();
+
+const reducer = (prevState, action) => {
+  switch (action.type) {
+    case 'TOGGLE':
+      return {
+        todos: prevState.todos.map(todo => {
+          if (todo.id === action.payload) {
+            todo.complete = !todo.complete
+          }
+          return todo
+        })
+      }
+    default: return prevState
+  }
+}
+
 export class Provider extends Component {
   state = {
     todos: [
