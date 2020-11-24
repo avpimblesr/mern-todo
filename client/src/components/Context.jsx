@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 const Context = React.createContext();
 
 const reducer = (prevState, action) => {
@@ -7,7 +9,9 @@ const reducer = (prevState, action) => {
     case 'TOGGLE':
       return {
         todos: prevState.todos.map(todo => {
-          if (todo.id === action.payload) { todo.complete = !todo.complete }
+          if (todo.id === action.payload) {
+            todo.complete = !todo.complete
+          }
           return todo
         }
         )
@@ -30,23 +34,17 @@ const reducer = (prevState, action) => {
 export class Provider extends Component {
   state = {
     todos: [
-      {
-        id: 1,
-        title: 'check emails',
-        complete: false
-      },
-      {
-        id: 2,
-        title: 'check voicemails',
-        complete: false
-      },
-      {
-        id: 3,
-        title: 'check report',
-        complete: false
-      },
+      { id: 1, title: "Milk the cows", completed: false },
+      { id: 2, title: "Shoe the horses", completed: false },
+      { id: 3, title: "Collect the eggs", completed: false }
     ],
     dispatch: (action) => this.setState(prevState => reducer(prevState, action))
+  }
+
+  componentDidMount() {
+    axios.get('/todos')
+      .then(res => this.setState({ todos: res.data }))
+    console.log('Component did mount')
   }
 
   render() {
